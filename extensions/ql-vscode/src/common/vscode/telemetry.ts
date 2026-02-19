@@ -8,8 +8,21 @@ import { UserCancellationException } from "./progress";
 import type { RedactableError } from "../errors";
 import type { SemVer } from "semver";
 import type { AppTelemetry } from "../telemetry";
-import type { EnvelopeTelemetry } from "applicationinsights/out/Declarations/Contracts";
 import type { Disposable } from "../disposable-object";
+
+// Type definition for Application Insights telemetry envelope
+// Compatible with both applicationinsights v1.x (used by vscode-extension-telemetry@0.1.7)
+// and v2.x/v3.x (when used as a dev dependency)
+interface EnvelopeTelemetry {
+  tags: Record<string, unknown>;
+  data: {
+    baseData?: {
+      properties?: Record<string, unknown>;
+      [key: string]: unknown;
+    };
+    [key: string]: unknown;
+  };
+}
 
 // Key is injected at build time through the APP_INSIGHTS_KEY environment variable.
 const key = "REPLACE-APP-INSIGHTS-KEY";
